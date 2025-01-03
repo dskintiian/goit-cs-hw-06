@@ -1,0 +1,29 @@
+services:
+  app:
+    build:
+      dockerfile: './Dockerfile'
+    volumes:
+      - './:/app'
+#    command: >
+#      /bin/sh -c 'python /app/main.py'
+    ports:
+      - "80:3000"
+    depends_on:
+      - database
+    restart: unless-stopped
+    networks:
+      - cs-hw-06-network
+  database:
+    image: mongo
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: mongodbuser
+      MONGO_INITDB_ROOT_PASSWORD: mongodbpswd
+    volumes:
+      - ./data/mongodb:/data/db
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    networks:
+      - cs-hw-06-network
+networks:
+  cs-hw-06-network:
